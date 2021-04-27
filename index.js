@@ -1,6 +1,16 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+app.use(passport.initialize());
+const bodyParser = require('body-parser')
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+ 
+// parse application/json
+app.use(bodyParser.json())
 const port = process.env.API_URL;
 
 const api = require("./api");
@@ -20,8 +30,8 @@ db.once("open", function () {
   // we're connected!
   console.log("WE ARE CONNECTED");
 });
-app.use(express.json()) // for parsing application/json
-app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(express.json()); // for parsing application/json
+app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.use("/api", api);
 
