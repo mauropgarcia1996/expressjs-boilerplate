@@ -1,40 +1,7 @@
 require("dotenv").config();
-const express = require("express");
-const app = express();
-
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-app.use(passport.initialize());
-const bodyParser = require('body-parser')
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
- 
-// parse application/json
-app.use(bodyParser.json())
+const app = require("./Utils/express");
+const mongoose = require("./Utils/mongoose");
 const port = process.env.API_URL;
 
-const api = require("./api");
-
-const mongoose = require("mongoose");
-mongoose.connect(
-  "mongodb+srv://admin:root@cluster0.sqfon.mongodb.net/expressjs-boilerplate?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function () {
-  // we're connected!
-  console.log("WE ARE CONNECTED");
-});
-app.use(express.json()); // for parsing application/json
-app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-
-app.use("/api", api);
-
-app.listen(port, () => {
-  console.log(`REST Client listening at ${process.env.API_HOST}:${port}`);
-});
+mongoose.connect();
+app.listen(port, () => console.log("We are connected."));
