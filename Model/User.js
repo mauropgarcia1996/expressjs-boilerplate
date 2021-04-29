@@ -8,7 +8,8 @@ const UserSchema = new Schema({
         type: String,
         unique: true
     },
-    password: String
+    password: String,
+    token: String
 });
 
 module.exports = mongoose.model('User', UserSchema);

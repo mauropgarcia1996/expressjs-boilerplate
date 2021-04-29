@@ -6,6 +6,9 @@ const UserService = require("../Service/UserService");
 const localOptions = { usernameField: "email", passwordField: "password" };
 const usernameLogin = async (username, password, done) => {
   const user = await UserService.getUser({ email: username });
+  if (!user) {
+    return done("Incorrect email.");
+  }
   const passwordCheck = await UserService.checkPassword(
     password,
     user.password

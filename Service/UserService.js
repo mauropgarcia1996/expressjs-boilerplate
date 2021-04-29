@@ -1,5 +1,6 @@
 const User = require("../Model/User");
 const utils = require("../Utils/utils");
+const jwt = require("jsonwebtoken");
 
 exports.createUser = async (data) => {
   const user = await User.create({
@@ -11,7 +12,26 @@ exports.createUser = async (data) => {
 
 exports.getUser = async (data) => {
   const user = await User.findOne({ email: data.email });
-  return user;
+  const token = jwt.sign(
+    {
+      data: "foobar",
+    },
+    "secret",
+    { expiresIn: "1h" }
+  );
+  User.findById(user.id, (err, doc) => {
+    if (err) {
+      return err;
+    }
+    doc.token = token;
+    doc.save();
+  });
+  return {
+    id: user.id,
+    email: user.email,
+    password: user.password,
+    token: token,
+  };
 };
 
 exports.checkPassword = async (password, encrypted) => {

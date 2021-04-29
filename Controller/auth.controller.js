@@ -1,7 +1,7 @@
 const UserService = require("../Service/UserService");
+const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res, next) => {
-  // Register method here
   try {
     const user = await UserService.createUser({
       email: req.body.email,
@@ -20,6 +20,18 @@ exports.register = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-  // Login method here
   res.json(req.user);
+};
+
+exports.logout = async (req, res, next) => {
+  req.logout();
+  res.send("Logged Out!");
+};
+
+exports.checkAuth = async (req, res, next) => {
+  const decoded = await jwt.verify(req.body.token, "secret");
+  if (!decoded) {
+    res.status(500).send("Invalid Token")
+  }
+  res.status(200).json(decoded)
 };
