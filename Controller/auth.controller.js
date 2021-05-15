@@ -35,3 +35,8 @@ exports.checkAuth = async (req, res, next) => {
   }
   res.status(200).json(decoded)
 };
+
+exports.randomName = async (req, res, next) => {
+  console.log(req.user)
+  res.send('Mauro Garcia!')
+}

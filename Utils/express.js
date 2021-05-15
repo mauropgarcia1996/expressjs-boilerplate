@@ -11,6 +11,7 @@ app.use(session({ secret: "secret" }));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use("local", strategies.local);
+passport.use("jwt", strategies.jwt)
 passport.serializeUser(function (user, done) {
   done(null, user.id);
 });

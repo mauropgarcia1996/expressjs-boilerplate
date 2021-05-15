@@ -14,10 +14,10 @@ exports.getUser = async (data) => {
   const user = await User.findOne({ email: data.email });
   const token = jwt.sign(
     {
-      data: "foobar",
+      user: user
     },
     "secret",
-    { expiresIn: "1h" }
+    { issuer: process.env.JWT_ISSUER, audience: process.env.JWT_AUDIENCE, expiresIn: "1h" }
   );
   User.findById(user.id, (err, doc) => {
     if (err) {
